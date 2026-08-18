@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadPilot AI — Never Miss Another HVAC Lead</title>
+<meta name="description" content="LeadPilot AI helps HVAC companies respond to website inquiries 24/7, capture customer details, and keep qualified opportunities moving.">
+<style>
+:root{--bg:#07111f;--panel:#0d1b2d;--panel2:#10243a;--text:#f5f8fc;--muted:#aab8c9;--accent:#62d8ff;--accent2:#8b7cff;--line:#20344d;--white:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 75% 10%,#17365b 0,transparent 32%),var(--bg);color:var(--text);line-height:1.6}
+a{text-decoration:none;color:inherit}.lang{display:flex;gap:4px;border:1px solid var(--line);border-radius:10px;padding:3px;background:#ffffff05}.lang button{border:0;background:transparent;color:var(--muted);padding:7px 9px;border-radius:7px;font-weight:750;cursor:pointer}.lang button.active{background:#ffffff12;color:var(--text)}.container{width:min(1120px,92%);margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:24px 0}.brand{font-weight:800;font-size:22px;letter-spacing:-.5px}.brand span{color:var(--accent)}.navlinks{display:flex;gap:26px;color:var(--muted);font-size:14px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;border-radius:12px;font-weight:750;border:1px solid transparent;transition:.2s}.btn.primary{background:var(--accent);color:#04101b}.btn.primary:hover{transform:translateY(-2px)}.btn.ghost{border-color:var(--line);color:var(--text);background:#ffffff08}
+.hero{padding:72px 0 90px}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}.eyebrow{display:inline-block;padding:7px 11px;border:1px solid #2c5771;border-radius:999px;color:#9ce8ff;background:#62d8ff0d;font-size:13px;font-weight:700}.hero h1{font-size:clamp(46px,7vw,78px);line-height:.98;letter-spacing:-4px;margin:20px 0}.hero h1 span{color:var(--accent)}.hero p{font-size:19px;color:var(--muted);max-width:650px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0}.proof{display:flex;gap:22px;color:#8fa2b7;font-size:13px}.mock{background:linear-gradient(145deg,#10253c,#0a1728);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 30px 80px #0008}.mocktop{display:flex;justify-content:space-between;color:#8fa2b7;font-size:12px;margin-bottom:15px}.status{color:#72e3aa}.chat{background:#081522;border-radius:17px;padding:18px}.bubble{padding:12px 14px;border-radius:14px;max-width:88%;margin:10px 0;font-size:14px}.bot{background:#142b42}.customer{background:#62d8ff;color:#04101b;margin-left:auto}.lead{margin-top:16px;border:1px solid #28435f;border-radius:14px;padding:14px;background:#0d2033}.lead strong{display:block}.section{padding:92px 0}.section h2{font-size:42px;letter-spacing:-2px;margin:0 0 14px}.section-intro{color:var(--muted);max-width:680px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}.card{background:#ffffff06;border:1px solid var(--line);border-radius:18px;padding:25px}.num{font-size:13px;color:var(--accent);font-weight:800}.card h3{margin:10px 0 7px}.card p{color:var(--muted);margin:0}.split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}.checklist{display:grid;gap:14px;margin-top:26px}.check{padding:15px;border:1px solid var(--line);border-radius:14px;background:#ffffff05}.check b{display:block}.check span{color:var(--muted);font-size:14px}.price{font-size:52px;font-weight:850;letter-spacing:-2px;margin:10px 0}.price small{font-size:15px;color:var(--muted);font-weight:500}.pricing{background:linear-gradient(145deg,#10283d,#0b1829);border:1px solid #2a4964;border-radius:24px;padding:32px}.pricing ul{padding-left:20px;color:var(--muted)}.pricing li{margin:9px 0}.faq{display:grid;gap:12px;margin-top:32px}.faq details{border:1px solid var(--line);border-radius:14px;padding:17px 20px;background:#ffffff05}.faq summary{cursor:pointer;font-weight:700}.faq p{color:var(--muted);margin-bottom:0}.cta{text-align:center;padding:82px 20px;border:1px solid var(--line);border-radius:26px;background:radial-gradient(circle at center,#173b58,#0b1728 60%)}.cta h2{margin-bottom:10px}.cta p{color:var(--muted);max-width:650px;margin:0 auto 25px}.footer{padding:40px 0;color:#718399;font-size:13px;border-top:1px solid var(--line);margin-top:80px}
+.modal{position:fixed;inset:0;background:#020914cc;backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}
+.modal.open{display:flex}.modal-card{width:min(560px,100%);max-height:92vh;overflow:auto;background:#0d1b2d;border:1px solid #2a4964;border-radius:24px;padding:28px;box-shadow:0 30px 100px #000b}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.modal-head h2{margin:0 0 6px;font-size:30px;letter-spacing:-1px}.modal-head p{margin:0;color:var(--muted)}
+.close{border:1px solid var(--line);background:#ffffff08;color:var(--text);width:40px;height:40px;border-radius:12px;font-size:22px;cursor:pointer}
+.form{display:grid;gap:14px;margin-top:24px}.field{display:grid;gap:7px}.field label{font-size:13px;font-weight:750}.field input,.field textarea,.field select{width:100%;border:1px solid #2a4964;background:#081522;color:var(--text);border-radius:12px;padding:13px 14px;font:inherit;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}.field textarea{min-height:105px;resize:vertical}.form-note{font-size:12px;color:#8194aa}.success{display:none;margin-top:18px;padding:14px;border:1px solid #2c6b51;border-radius:12px;background:#0c2a20;color:#a9f0cf}.success.show{display:block}
+@media(max-width:800px){.navlinks{display:none}.hero{padding-top:42px}.hero-grid,.split,.cards{grid-template-columns:1fr}.hero h1{letter-spacing:-2.5px}.section h2{font-size:34px}.mock{margin-top:10px}.footerrow{flex-direction:column}.modal-card{padding:22px;border-radius:20px}}.footerrow{display:flex;justify-content:space-between;gap:20px}.disclaimer{margin-top:10px;max-width:800px}@media(max-width:800px){.navlinks{display:none}.hero{padding-top:42px}.hero-grid,.split,.cards{grid-template-columns:1fr}.hero h1{letter-spacing:-2.5px}.section h2{font-size:34px}.mock{margin-top:10px}.footerrow{flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="container nav">
+  <a class="brand" href="#">LeadPilot<span> AI</span></a>
+  <nav class="navlinks"><a href="#how" data-en="How it works" data-ru="Как это работает">How it works</a><a href="#features" data-en="Features" data-ru="Возможности">Features</a><a href="#pricing" data-en="Pilot" data-ru="Пилот">Pilot</a><a href="#faq">FAQ</a></nav>
+  <div style="display:flex;align-items:center;gap:10px">
+<div class="lang" aria-label="Language selector"><button id="enBtn" class="active" onclick="setLang('en')">EN</button><button id="ruBtn" onclick="setLang('ru')">RU</button></div>
+<a class="btn primary" id="navCta" href="#demo" onclick="openDemo(event)">Book a Demo</a>
+</div>
+</header>
+
+<main>
+<section class="hero">
+<div class="container hero-grid">
+<div>
+<span class="eyebrow" data-en="Built for HVAC companies" data-ru="Для HVAC-компаний">Built for HVAC companies</span>
+<h1><span data-en="Never miss another" data-ru="Не теряйте ни одной">Never miss another</span> <span data-en="HVAC lead." data-ru="HVAC-заявки.">HVAC lead.</span></h1>
+<p data-en="LeadPilot AI responds to website inquiries, captures customer details, and helps your team keep qualified opportunities moving — 24/7." data-ru="LeadPilot AI отвечает на обращения с сайта, собирает данные клиентов и помогает вашей команде не терять квалифицированные заявки — 24/7.">LeadPilot AI responds to website inquiries, captures customer details, and helps your team keep qualified opportunities moving — 24/7.</p>
+<div class="actions"><a class="btn primary" data-en="Book a Free Demo" data-ru="Бесплатное демо" href="#demo" onclick="openDemo(event)">Book a Free Demo</a><a class="btn ghost" data-en="See How It Works" data-ru="Как это работает" href="#how">See How It Works</a></div>
+<div class="proof"><span data-en="✓ 24/7 initial response" data-ru="✓ Первичный ответ 24/7">✓ 24/7 initial response</span><span data-en="✓ Human team stays in control" data-ru="✓ Ваша команда сохраняет контроль">✓ Human team stays in control</span></div>
+</div>
+<div class="mock">
+<div class="mocktop"><span>LeadPilot conversation</span><span class="status">● Online</span></div>
+<div class="chat">
+<div class="bubble customer">My AC isn't cooling. Can someone help?</div>
+<div class="bubble bot">Absolutely. I can get your request started. What’s your name, phone number, ZIP code, and a brief description of the issue?</div>
+<div class="bubble customer">John · 20147 · (703) 555-0142</div>
+<div class="lead"><strong>New qualified inquiry</strong><span style="color:#9fb1c4;font-size:13px">AC not cooling · ZIP 20147 · Contact captured</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section" id="how">
+<div class="container">
+<h2 data-en="From inquiry to qualified lead." data-ru="От обращения до квалифицированной заявки.">From inquiry to qualified lead.</h2>
+<p class="section-intro" data-en="LeadPilot handles the repetitive first step so your team can focus on the jobs that need a human." data-ru="LeadPilot берет на себя первичную рутинную обработку, чтобы ваша команда могла сосредоточиться на задачах, где нужен человек.">LeadPilot handles the repetitive first step so your team can focus on the jobs that need a human.</p>
+<div class="cards">
+<div class="card"><span class="num">01</span><h3 data-en="Customer reaches out" data-ru="Клиент обращается">Customer reaches out</h3><p data-en="A visitor starts a conversation through your website." data-ru="Посетитель начинает диалог через ваш сайт.">A visitor starts a conversation through your website.</p></div>
+<div class="card"><span class="num">02</span><h3 data-en="LeadPilot responds" data-ru="LeadPilot отвечает">LeadPilot responds</h3><p data-en="AI handles initial questions and gathers the information your team needs." data-ru="ИИ отвечает на первичные вопросы и собирает информацию, необходимую вашей команде.">AI handles initial questions and gathers the information your team needs.</p></div>
+<div class="card"><span class="num">03</span><h3 data-en="Your team gets the lead" data-ru="Ваша команда получает заявку">Your team gets the lead</h3><p data-en="Qualified inquiry details are passed to your team for follow-up." data-ru="Данные квалифицированной заявки передаются вашей команде для дальнейшей работы.">Qualified inquiry details are passed to your team for follow-up.</p></div>
+</div>
+</div>
+</section>
+
+<section class="section" id="features">
+<div class="container split">
+<div>
+<h2 data-en="Built to support your team, not replace it." data-ru="Создан, чтобы помогать вашей команде, а не заменять её.">Built to support your team, not replace it.</h2>
+<p class="section-intro" data-en="LeadPilot is designed around a simple idea: respond quickly, collect useful information, and hand the opportunity to your people." data-ru="Принцип простой: быстро ответить, собрать полезную информацию и передать возможность вашей команде.">LeadPilot is designed around a simple idea: respond quickly, collect useful information, and hand the opportunity to your people.</p>
+<div class="checklist">
+<div class="check"><b data-en="Website lead capture" data-ru="Сбор заявок с сайта">Website lead capture</b><span data-en="Collect names, contact details, location and issue details." data-ru="Сбор имени, контактов, местоположения и описания проблемы.">Collect names, contact details, location and issue details.</span></div>
+<div class="check"><b data-en="Always-on first response" data-ru="Первичный ответ 24/7">Always-on first response</b><span data-en="Give visitors a useful first response when your team is busy or unavailable." data-ru="Дайте посетителю полезный ответ, когда команда занята или недоступна.">Give visitors a useful first response when your team is busy or unavailable.</span></div>
+<div class="check"><b data-en="Qualification" data-ru="Квалификация">Qualification</b><span data-en="Ask consistent intake questions before the request reaches your team." data-ru="Задавайте стандартные вопросы до передачи заявки команде.">Ask consistent intake questions before the request reaches your team.</span></div>
+<div class="check"><b data-en="Human handoff" data-ru="Передача человеку">Human handoff</b><span data-en="Your staff stays responsible for estimates, diagnosis, scheduling and service." data-ru="Ваша команда отвечает за сметы, диагностику, запись и обслуживание.">Your staff stays responsible for estimates, diagnosis, scheduling and service.</span></div>
+</div>
+</div>
+<div class="pricing" id="pricing">
+<span class="eyebrow" data-en="30-day pilot" data-ru="30-дневный пилот">30-day pilot</span>
+<h3>LeadPilot Starter</h3>
+<div class="price">$750 <small>setup</small></div>
+<div style="font-size:22px;font-weight:750">$249 <small style="font-size:14px;color:#9fb1c4">/ month</small></div>
+<ul>
+<li data-en="AI website intake" data-ru="AI-приём заявок с сайта">AI website intake</li><li data-en="Lead qualification" data-ru="Квалификация заявок">Lead qualification</li><li data-en="Customer information capture" data-ru="Сбор данных клиента">Customer information capture</li><li data-en="Team notifications" data-ru="Уведомления команды">Team notifications</li><li data-en="Basic reporting" data-ru="Базовая аналитика">Basic reporting</li><li data-en="Monthly optimization" data-ru="Ежемесячная оптимизация">Monthly optimization</li>
+</ul>
+<a class="btn primary" style="width:100%" data-en="Start a Pilot" data-ru="Начать пилот" href="#demo" onclick="openDemo(event)">Start a Pilot</a>
+</div>
+</div>
+</section>
+
+<section class="section" id="faq">
+<div class="container">
+<h2 data-en="Questions, answered." data-ru="Ответы на вопросы.">Questions, answered.</h2>
+<div class="faq">
+<details><summary data-en="Does LeadPilot replace my HVAC staff?" data-ru="LeadPilot заменяет сотрудников HVAC?">Does LeadPilot replace my HVAC staff?</summary><p data-en="No. It handles the initial intake and passes the opportunity to your team. Your staff remains responsible for diagnosis, pricing, scheduling and service." data-ru="Нет. Он обрабатывает первичное обращение и передаёт заявку вашей команде. Сотрудники по-прежнему отвечают за диагностику, цены, запись и обслуживание.">No. It handles the initial intake and passes the opportunity to your team. Your staff remains responsible for diagnosis, pricing, scheduling and service.</p></details>
+<details><summary data-en="Can it guarantee more booked jobs?" data-ru="Может ли он гарантировать больше заказов?">Can it guarantee more booked jobs?</summary><p data-en="No. LeadPilot is designed to improve response and lead capture, but results depend on traffic, demand, sales follow-up and other factors." data-ru="Нет. LeadPilot помогает улучшить скорость ответа и сбор заявок, но результат зависит от трафика, спроса, работы отдела продаж и других факторов.">No. LeadPilot is designed to improve response and lead capture, but results depend on traffic, demand, sales follow-up and other factors.</p></details>
+<details><summary data-en="Can the AI diagnose HVAC problems?" data-ru="Может ли AI диагностировать проблемы HVAC?">Can the AI diagnose HVAC problems?</summary><p data-en="It should not present itself as a licensed technician or make definitive technical diagnoses. Its job is to gather information and route the inquiry appropriately." data-ru="Он не должен выдавать себя за лицензированного специалиста или ставить окончательный технический диагноз. Его задача — собрать информацию и правильно передать обращение.">It should not present itself as a licensed technician or make definitive technical diagnoses. Its job is to gather information and route the inquiry appropriately.</p></details>
+<details><summary data-en="Why start with a 30-day pilot?" data-ru="Зачем начинать с 30-дневного пилота?">Why start with a 30-day pilot?</summary><p data-en="A pilot lets you measure captured and qualified inquiries before deciding whether LeadPilot is a good long-term fit." data-ru="Пилот позволяет измерить количество собранных и квалифицированных обращений до решения о долгосрочном использовании LeadPilot.">A pilot lets you measure captured and qualified inquiries before deciding whether LeadPilot is a good long-term fit.</p></details>
+</div>
+</div>
+</section>
+
+<section class="container">
+<div class="cta">
+<h2 data-en="Stop letting unanswered inquiries become lost opportunities." data-ru="Не позволяйте неотвеченным обращениям превращаться в потерянные возможности.">Stop letting unanswered inquiries become lost opportunities.</h2>
+<p data-en="See how LeadPilot could fit into your HVAC company's existing lead flow." data-ru="Посмотрите, как LeadPilot может встроиться в текущую систему обработки заявок вашей HVAC-компании.">See how LeadPilot could fit into your HVAC company's existing lead flow.</p>
+<a class="btn primary" data-en="Book a 10-Minute Demo" data-ru="Записаться на 10-минутное демо" href="#demo" onclick="openDemo(event)">Book a 10-Minute Demo</a>
+</div>
+</section>
+
+<div class="modal" id="demoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+  <div class="modal-card" role="document">
+    <div class="modal-head">
+      <div>
+        <h2 id="demoTitle" data-en="Book a free demo" data-ru="Записаться на бесплатное демо">Book a free demo</h2>
+        <p id="demoIntro" data-en="Tell us a little about your company and we'll get back to you." data-ru="Расскажите немного о вашей компании — мы свяжемся с вами.">Tell us a little about your company and we'll get back to you.</p>
+      </div>
+      <button class="close" type="button" onclick="closeDemo()" aria-label="Close">×</button>
+    </div>
+    <form class="form" id="demoForm">
+      <div class="field">
+        <label for="name" data-en="Your name" data-ru="Ваше имя">Your name</label>
+        <input id="name" name="name" required autocomplete="name" data-placeholder-en="John Smith" data-placeholder-ru="Иван Иванов" placeholder="John Smith">
+      </div>
+      <div class="field">
+        <label for="company" data-en="Company" data-ru="Компания">Company</label>
+        <input id="company" name="company" required autocomplete="organization" data-placeholder-en="Acme HVAC" data-placeholder-ru="Acme HVAC" placeholder="Acme HVAC">
+      </div>
+      <div class="field">
+        <label for="contact" data-en="Email or phone" data-ru="Email или телефон">Email or phone</label>
+        <input id="contact" name="contact" required autocomplete="email" data-placeholder-en="you@company.com" data-placeholder-ru="you@company.com" placeholder="you@company.com">
+      </div>
+      <div class="field">
+        <label for="leads" data-en="How do you currently handle website leads?" data-ru="Как вы сейчас обрабатываете заявки с сайта?">How do you currently handle website leads?</label>
+        <select id="leads" name="leads">
+          <option value="" data-en="Select one" data-ru="Выберите вариант">Select one</option>
+          <option value="Owner/team responds manually" data-en="Owner/team responds manually" data-ru="Владелец/команда отвечают вручную">Owner/team responds manually</option>
+          <option value="CRM or chatbot" data-en="CRM or chatbot" data-ru="CRM или чат-бот">CRM or chatbot</option>
+          <option value="We are not sure / it varies" data-en="We are not sure / it varies" data-ru="Не уверены / по-разному">We are not sure / it varies</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="message" data-en="Anything you'd like us to know? (optional)" data-ru="Что ещё нам стоит знать? (необязательно)">Anything you'd like us to know? (optional)</label>
+        <textarea id="message" name="message" data-placeholder-en="For example: missed calls, slow website responses, lead volume..." data-placeholder-ru="Например: пропущенные звонки, медленные ответы, объём заявок..." placeholder="For example: missed calls, slow website responses, lead volume..."></textarea>
+      </div>
+      <button class="btn primary" type="submit" data-en="Request my demo" data-ru="Запросить демо">Request my demo</button>
+      <div class="form-note" id="formNote" data-en="Submitting opens your email app with the request ready to send. No password or payment is required." data-ru="После отправки откроется ваше почтовое приложение с готовым письмом. Пароль или оплата не требуются.">Submitting opens your email app with the request ready to send. No password or payment is required.</div>
+      <div class="success" id="successMsg" data-en="Your request is ready in your email app. Press Send to finish." data-ru="Заявка готова в почтовом приложении. Нажмите «Отправить», чтобы завершить.">Your request is ready in your email app. Press Send to finish.</div>
+    </form>
+  </div>
+</div>
+</main>
+
+<footer class="container footer">
+<div class="footerrow"><span>© 2026 LeadPilot AI</span><span data-en="Built for HVAC businesses." data-ru="Создан для HVAC-бизнеса.">Built for HVAC businesses.</span></div>
+<div class="disclaimer" data-en="LeadPilot AI is an intake and lead-response tool. It does not provide licensed HVAC diagnosis, emergency services, pricing guarantees, or guaranteed business results." data-ru="LeadPilot AI — инструмент для приёма и первичной обработки заявок. Он не предоставляет лицензированную HVAC-диагностику, аварийные услуги, гарантии цен или гарантированный бизнес-результат.">LeadPilot AI is an intake and lead-response tool. It does not provide licensed HVAC diagnosis, emergency services, pricing guarantees, or guaranteed business results.</div>
+</footer>
+
+<script>
+const translations = {
+  en: {navCta:"Book a Demo", title:"LeadPilot AI — Never Miss Another HVAC Lead"},
+  ru: {navCta:"Записаться на демо", title:"LeadPilot AI — Не теряйте ни одной HVAC-заявки"}
+};
+
+function setLang(lang){
+  document.documentElement.lang = lang === 'ru' ? 'ru' : 'en';
+  document.querySelectorAll('[data-en][data-ru]').forEach(el=>{
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return;
+    el.textContent = el.getAttribute('data-'+lang);
+  });
+  document.querySelectorAll('[data-placeholder-en][data-placeholder-ru]').forEach(el=>{
+    el.placeholder = el.getAttribute('data-placeholder-'+lang);
+  });
+  document.getElementById('enBtn').classList.toggle('active',lang==='en');
+  document.getElementById('ruBtn').classList.toggle('active',lang==='ru');
+  document.getElementById('navCta').textContent = translations[lang].navCta;
+  document.title = translations[lang].title;
+  localStorage.setItem('leadpilot-lang',lang);
+}
+
+function openDemo(event){
+  if(event) event.preventDefault();
+  const modal=document.getElementById('demoModal');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('name').focus(),50);
+}
+
+function closeDemo(){
+  const modal=document.getElementById('demoModal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+
+document.getElementById('demoModal').addEventListener('click',e=>{
+  if(e.target.id==='demoModal') closeDemo();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeDemo();
+});
+
+document.getElementById('demoForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const lang=localStorage.getItem('leadpilot-lang') || 'en';
+  const name=document.getElementById('name').value.trim();
+  const company=document.getElementById('company').value.trim();
+  const contact=document.getElementById('contact').value.trim();
+  const leads=document.getElementById('leads').value.trim();
+  const message=document.getElementById('message').value.trim();
+
+  const subject = lang === 'ru'
+    ? `LeadPilot AI — новая заявка на демо от ${company}`
+    : `LeadPilot AI — new demo request from ${company}`;
+
+  const body = lang === 'ru'
+    ? `Имя: ${name}\nКомпания: ${company}\nEmail/телефон: ${contact}\nКак обрабатывают заявки: ${leads || 'Не указано'}\nДополнительно: ${message || 'Не указано'}`
+    : `Name: ${name}\nCompany: ${company}\nEmail/phone: ${contact}\nCurrent lead handling: ${leads || 'Not provided'}\nAdditional notes: ${message || 'Not provided'}`;
+
+  const mailto=`mailto:office@leadpilot.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  document.getElementById('successMsg').classList.add('show');
+  window.location.href=mailto;
+});
+
+setLang(localStorage.getItem('leadpilot-lang') || 'en');
+</script>
+</body>
+</html>
