@@ -116,7 +116,7 @@ a{text-decoration:none;color:inherit}.lang{display:flex;gap:4px;border:1px solid
       </div>
       <button class="close" type="button" onclick="closeDemo()" aria-label="Close">×</button>
     </div>
-    <form class="form" id="demoForm">
+    <form class="form" id="demoForm" action="https://formspree.io/f/mbgrqwlv" method="POST">
       <div class="field">
         <label for="name" data-en="Your name" data-ru="Ваше имя">Your name</label>
         <input id="name" name="name" required autocomplete="name" data-placeholder-en="John Smith" data-placeholder-ru="Иван Иванов" placeholder="John Smith">
@@ -143,8 +143,8 @@ a{text-decoration:none;color:inherit}.lang{display:flex;gap:4px;border:1px solid
         <textarea id="message" name="message" data-placeholder-en="For example: missed calls, slow website responses, lead volume..." data-placeholder-ru="Например: пропущенные звонки, медленные ответы, объём заявок..." placeholder="For example: missed calls, slow website responses, lead volume..."></textarea>
       </div>
       <button class="btn primary" type="submit" data-en="Request my demo" data-ru="Запросить демо">Request my demo</button>
-      <div class="form-note" id="formNote" data-en="Submitting opens your email app with the request ready to send. No password or payment is required." data-ru="После отправки откроется ваше почтовое приложение с готовым письмом. Пароль или оплата не требуются.">Submitting opens your email app with the request ready to send. No password or payment is required.</div>
-      <div class="success" id="successMsg" data-en="Your request is ready in your email app. Press Send to finish." data-ru="Заявка готова в почтовом приложении. Нажмите «Отправить», чтобы завершить.">Your request is ready in your email app. Press Send to finish.</div>
+      <div class="form-note" id="formNote" data-en="Your request is sent securely to our LeadPilot inbox. No password or payment is required." data-ru="Заявка отправляется в LeadPilot. Пароль или оплата не требуются.">Your request is sent securely to our LeadPilot inbox. No password or payment is required.</div>
+      <div class="success" id="successMsg" data-en="Thanks! Your demo request has been sent. We will get back to you soon." data-ru="Спасибо! Заявка на демо отправлена. Мы скоро свяжемся с вами.">Thanks! Your demo request has been sent. We will get back to you soon.</div>
     </form>
   </div>
 </div>
@@ -200,26 +200,39 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape') closeDemo();
 });
 
-document.getElementById('demoForm').addEventListener('submit',e=>{
+document.getElementById('demoForm').addEventListener('submit', async e=>{
   e.preventDefault();
-  const lang=localStorage.getItem('leadpilot-lang') || 'en';
-  const name=document.getElementById('name').value.trim();
-  const company=document.getElementById('company').value.trim();
-  const contact=document.getElementById('contact').value.trim();
-  const leads=document.getElementById('leads').value.trim();
-  const message=document.getElementById('message').value.trim();
+  const form = e.currentTarget;
+  const button = form.querySelector('button[type="submit"]');
+  const success = document.getElementById('successMsg');
+  const lang = localStorage.getItem('leadpilot-lang') || 'en';
+  const originalText = button.textContent;
 
-  const subject = lang === 'ru'
-    ? `LeadPilot AI — новая заявка на демо от ${company}`
-    : `LeadPilot AI — new demo request from ${company}`;
+  button.disabled = true;
+  button.textContent = lang === 'ru' ? 'Отправляем…' : 'Sending…';
+  success.classList.remove('show');
 
-  const body = lang === 'ru'
-    ? `Имя: ${name}\nКомпания: ${company}\nEmail/телефон: ${contact}\nКак обрабатывают заявки: ${leads || 'Не указано'}\nДополнительно: ${message || 'Не указано'}`
-    : `Name: ${name}\nCompany: ${company}\nEmail/phone: ${contact}\nCurrent lead handling: ${leads || 'Not provided'}\nAdditional notes: ${message || 'Not provided'}`;
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
 
-  const mailto=`mailto:office@leadpilot.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  document.getElementById('successMsg').classList.add('show');
-  window.location.href=mailto;
+    if (!response.ok) throw new Error('Form submission failed');
+
+    success.classList.add('show');
+    form.reset();
+    button.textContent = lang === 'ru' ? 'Отправлено ✓' : 'Sent ✓';
+  } catch (error) {
+    success.textContent = lang === 'ru'
+      ? 'Не удалось отправить заявку. Попробуйте ещё раз.'
+      : 'We could not send your request. Please try again.';
+    success.classList.add('show');
+    button.textContent = originalText;
+  } finally {
+    button.disabled = false;
+  }
 });
 
 setLang(localStorage.getItem('leadpilot-lang') || 'en');
